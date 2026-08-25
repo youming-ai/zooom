@@ -5,7 +5,14 @@ node_modules/
 __pycache__/
 *.pyc
 .venv/
+.output/
+.nitro/
+.tanstack/
+dist/
+coverage/
 
 # Editor / AI assistant local config
 .claude/
 .DS_Store
+*.pem
+*.tsbuildinfo
