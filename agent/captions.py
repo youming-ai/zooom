@@ -3,9 +3,9 @@ from __future__ import annotations
 import json
 
 
-def build_interim(sid: str, speaker: str, original: str) -> bytes:
+def build_interim(speaker_id: str, speaker: str, original: str) -> bytes:
     return json.dumps(
-        {"type": "interim", "sid": sid, "speaker": speaker, "original": original},
+        {"type": "interim", "speakerId": speaker_id, "speaker": speaker, "original": original},
         ensure_ascii=False,
     ).encode("utf-8")
 
@@ -13,7 +13,7 @@ def build_interim(sid: str, speaker: str, original: str) -> bytes:
 def build_final(
     *,
     id: str,
-    sid: str,
+    speaker_id: str,
     speaker: str,
     src_lang: str,
     original: str,
@@ -25,7 +25,7 @@ def build_final(
         {
             "type": "final",
             "id": id,
-            "sid": sid,
+            "speakerId": speaker_id,
             "speaker": speaker,
             "srcLang": src_lang,
             "original": original,

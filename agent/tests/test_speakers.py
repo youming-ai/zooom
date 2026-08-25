@@ -1,8 +1,8 @@
-from speakers import speaker_label, speaker_sid
+from speakers import speaker_id, speaker_label
 
 
-def test_speaker_sid_uses_participant_identity():
-    assert speaker_sid("tang-abc") == "tang-abc"
+def test_speaker_id_uses_participant_identity():
+    assert speaker_id("tang-abc") == "tang-abc"
 
 
 def test_speaker_label_prefers_display_name():

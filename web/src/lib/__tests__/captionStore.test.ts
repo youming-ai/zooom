@@ -3,10 +3,10 @@ import { captionReducer, emptyStore } from "@/lib/captionStore";
 import type { Caption } from "@/lib/captions";
 
 const interim = (sid: string, text: string): Caption => ({
-  type: "interim", sid, speaker: sid, original: text,
+  type: "interim", speakerId: sid, speaker: sid, original: text,
 });
 const final = (id: string, sid: string): Caption => ({
-  type: "final", id, sid, speaker: sid,
+  type: "final", id, speakerId: sid, speaker: sid,
   srcLang: "zh", original: "你好", tgtLang: "ja", translation: "こんにちは", ts: 1,
 });
 

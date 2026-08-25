@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { Languages, ArrowLeft, ArrowRight, Mic, Hash, User2 } from "lucide-react";
 import { validateJoin } from "@/lib/join";
+import type { Lang } from "@/lib/captions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,8 +14,6 @@ import {
   CardDescription,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-
-type Lang = "zh" | "ja";
 
 const LANG_OPTIONS: {
   value: Lang;

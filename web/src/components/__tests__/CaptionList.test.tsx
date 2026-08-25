@@ -6,11 +6,11 @@ import type { CaptionStore } from "@/lib/captionStore";
 const store: CaptionStore = {
   finals: [
     {
-      type: "final", id: "s1", sid: "A", speaker: "Tang",
+      type: "final", id: "s1", speakerId: "A", speaker: "Tang",
       srcLang: "zh", original: "你好", tgtLang: "ja", translation: "こんにちは", ts: 1,
     },
   ],
-  interims: { B: { type: "interim", sid: "B", speaker: "Sato", original: "ええと…" } },
+  interims: { B: { type: "interim", speakerId: "B", speaker: "Sato", original: "ええと…" } },
 };
 
 describe("CaptionList", () => {
@@ -24,6 +24,6 @@ describe("CaptionList", () => {
   it("renders an interim line for the live speaker", () => {
     render(<CaptionList store={store} />);
     expect(screen.getByText("ええと…")).toBeInTheDocument();
-    expect(screen.getByTestId("interim")).toHaveAttribute("data-sid", "B");
+    expect(screen.getByTestId("interim")).toHaveAttribute("data-speaker-id", "B");
   });
 });

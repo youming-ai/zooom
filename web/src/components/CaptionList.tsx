@@ -25,7 +25,7 @@ export function CaptionList({ store }: { store: CaptionStore }) {
         <article
           key={f.id}
           data-testid="final"
-          data-sid={f.sid}
+          data-speaker-id={f.speakerId}
           className={cn(
             "group/caption relative flex gap-3 rounded-2xl border bg-card p-4 shadow-sm transition-colors",
             "hover:border-foreground/15"
@@ -34,8 +34,8 @@ export function CaptionList({ store }: { store: CaptionStore }) {
           <Avatar
             className="size-9 text-sm"
             style={{
-              backgroundColor: `color-mix(in oklch, ${speakerColor(f.sid)} 22%, var(--card))`,
-              color: speakerColor(f.sid),
+              backgroundColor: `color-mix(in oklch, ${speakerColor(f.speakerId)} 22%, var(--card))`,
+              color: speakerColor(f.speakerId),
             }}
             aria-hidden
           >
@@ -83,16 +83,16 @@ export function CaptionList({ store }: { store: CaptionStore }) {
 
       {Object.values(store.interims).map((i) => (
         <article
-          key={`interim-${i.sid}`}
+          key={`interim-${i.speakerId}`}
           data-testid="interim"
-          data-sid={i.sid}
+          data-speaker-id={i.speakerId}
           className="flex gap-3 rounded-2xl border border-dashed bg-card/60 p-4 opacity-80"
         >
           <Avatar
             className="size-9 text-sm"
             style={{
-              backgroundColor: `color-mix(in oklch, ${speakerColor(i.sid)} 18%, var(--card))`,
-              color: speakerColor(i.sid),
+              backgroundColor: `color-mix(in oklch, ${speakerColor(i.speakerId)} 18%, var(--card))`,
+              color: speakerColor(i.speakerId),
             }}
             aria-hidden
           >

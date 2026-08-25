@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 
-def speaker_sid(identity: str) -> str:
+def speaker_id(identity: str) -> str:
     return identity
 
 

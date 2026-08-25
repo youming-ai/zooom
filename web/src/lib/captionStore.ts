@@ -9,12 +9,12 @@ export const emptyStore: CaptionStore = { finals: [], interims: {} };
 
 export function captionReducer(store: CaptionStore, c: Caption): CaptionStore {
   if (c.type === "interim") {
-    return { ...store, interims: { ...store.interims, [c.sid]: c } };
+    return { ...store, interims: { ...store.interims, [c.speakerId]: c } };
   }
   if (store.finals.some((f) => f.id === c.id)) {
     return store;
   }
   const interims = { ...store.interims };
-  delete interims[c.sid];
+  delete interims[c.speakerId];
   return { finals: [...store.finals, c], interims };
 }

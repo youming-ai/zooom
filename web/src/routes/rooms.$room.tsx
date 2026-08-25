@@ -159,10 +159,7 @@ function RoomBody({
           </div>
 
           <div className="flex items-center gap-1.5 sm:gap-2">
-            <div className="hidden sm:block">
-              <MicMuteIndicator muted={false} />
-            </div>
-            <MicToggle />
+            <MicControls />
             <Link
               to="/"
               aria-label="离开会议"
@@ -198,25 +195,30 @@ function RoomBody({
   );
 }
 
-function MicToggle() {
+function MicControls() {
   const { isMicrophoneEnabled, localParticipant } = useLocalParticipant();
   return (
-    <Button
-      type="button"
-      size="icon-sm"
-      variant={isMicrophoneEnabled ? "secondary" : "destructive"}
-      aria-label={isMicrophoneEnabled ? "关闭麦克风" : "打开麦克风"}
-      title={isMicrophoneEnabled ? "关闭麦克风" : "打开麦克风"}
-      onClick={() => {
-        localParticipant.setMicrophoneEnabled(!isMicrophoneEnabled);
-      }}
-    >
-      {isMicrophoneEnabled ? (
-        <Mic className="size-4" />
-      ) : (
-        <MicOff className="size-4" />
-      )}
-    </Button>
+    <>
+      <div className="hidden sm:block">
+        <MicMuteIndicator muted={!isMicrophoneEnabled} />
+      </div>
+      <Button
+        type="button"
+        size="icon-sm"
+        variant={isMicrophoneEnabled ? "secondary" : "destructive"}
+        aria-label={isMicrophoneEnabled ? "关闭麦克风" : "打开麦克风"}
+        title={isMicrophoneEnabled ? "关闭麦克风" : "打开麦克风"}
+        onClick={() => {
+          localParticipant.setMicrophoneEnabled(!isMicrophoneEnabled);
+        }}
+      >
+        {isMicrophoneEnabled ? (
+          <Mic className="size-4" />
+        ) : (
+          <MicOff className="size-4" />
+        )}
+      </Button>
+    </>
   );
 }
 
