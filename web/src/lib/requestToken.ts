@@ -26,7 +26,7 @@ export const requestToken = createServerFn({ method: "POST" })
     if (!apiKey || !apiSecret || !url) {
       throw new Error("服务端未配置 LiveKit 凭据");
     }
-    const identity = `${data.name}-${Math.random().toString(36).slice(2, 8)}`;
+    const identity = `${data.name}-${crypto.randomUUID().slice(0, 8)}`;
     const token = await buildAccessToken(apiKey, apiSecret, {
       room: data.room,
       name: data.name,
