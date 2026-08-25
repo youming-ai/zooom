@@ -18,7 +18,7 @@ from livekit.plugins import deepgram
 from livekit.agents.stt import SpeechEventType
 
 from captions import build_final, build_interim
-from speakers import speaker_label, speaker_sid
+from speakers import speaker_id, speaker_label
 from translate import GeminiClient, TranslationError, Translator, other_lang
 
 load_dotenv()
@@ -40,7 +40,7 @@ async def _transcribe_track(
     if spoken not in _SUPPORTED_SPOKEN:
         spoken = "zh"
     tgt = other_lang(spoken)
-    speaker_sid_value = speaker_sid(participant.identity)
+    speaker_id_value = speaker_id(participant.identity)
     speaker_name = speaker_label(participant.name, participant.identity)
     dg_lang = spoken
 
@@ -78,7 +78,7 @@ async def _transcribe_track(
                 async for speech_event in stt_stream:
                     await _handle_speech_event(
                         speech_event=speech_event,
-                        speaker_sid_value=speaker_sid_value,
+                        speaker_id_value=speaker_id_value,
                         speaker_name=speaker_name,
                         spoken=spoken,
                         tgt=tgt,
@@ -102,7 +102,7 @@ async def _transcribe_track(
 async def _handle_speech_event(
     *,
     speech_event: agents.stt.SpeechEvent,
-    speaker_sid_value: str,
+    speaker_id_value: str,
     speaker_name: str,
     spoken: str,
     tgt: str,
@@ -120,7 +120,7 @@ async def _handle_speech_event(
 
     if speech_event.type == SpeechEventType.INTERIM_TRANSCRIPT:
         payload = build_interim(
-            sid=speaker_sid_value,
+            speaker_id=speaker_id_value,
             speaker=speaker_name,
             original=text,
         )
@@ -136,7 +136,7 @@ async def _handle_speech_event(
 
         payload = build_final(
             id=str(uuid.uuid4()),
-            sid=speaker_sid_value,
+            speaker_id=speaker_id_value,
             speaker=speaker_name,
             src_lang=spoken,
             original=text,
@@ -155,6 +155,10 @@ async def entrypoint(ctx: agents.JobContext) -> None:
         model=os.environ.get("TRANSLATE_MODEL", "gemini-2.5-flash"),
     )
 
+    # Hold strong references to the per-track transcription tasks so the event
+    # loop does not garbage-collect them prematurely; discard on completion.
+    transcribe_tasks: set[asyncio.Task[None]] = set()
+
     @ctx.room.on("track_subscribed")
     def on_track_subscribed(
         track: rtc.Track,
@@ -162,7 +166,7 @@ async def entrypoint(ctx: agents.JobContext) -> None:
         participant: rtc.RemoteParticipant,
     ) -> None:
         if track.kind == rtc.TrackKind.KIND_AUDIO:
-            asyncio.ensure_future(
+            task = asyncio.ensure_future(
                 _transcribe_track(
                     track=track,  # type: ignore[arg-type]
                     participant=participant,
@@ -170,6 +174,8 @@ async def entrypoint(ctx: agents.JobContext) -> None:
                     translator=translator,
                 )
             )
+            transcribe_tasks.add(task)
+            task.add_done_callback(transcribe_tasks.discard)
 
 
 if __name__ == "__main__":

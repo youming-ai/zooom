@@ -4,7 +4,7 @@ import { parseCaption, type Caption } from "@/lib/captions";
 const final: Caption = {
   type: "final",
   id: "seg_1",
-  sid: "PA_x",
+  speakerId: "PA_x",
   speaker: "Tang",
   srcLang: "zh",
   original: "你好",
@@ -21,7 +21,7 @@ describe("captions protocol", () => {
   });
 
   it("parses an interim caption", () => {
-    const interim: Caption = { type: "interim", sid: "PA_x", speaker: "Tang", original: "你…" };
+    const interim: Caption = { type: "interim", speakerId: "PA_x", speaker: "Tang", original: "你…" };
     expect(parseCaption(encode(interim))).toEqual(interim);
   });
 

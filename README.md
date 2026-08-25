@@ -71,6 +71,8 @@ GOOGLE_API_KEY=...
 TRANSLATE_MODEL=gemini-2.5-flash
 ```
 
+Agent 依赖在 `agent/requirements.txt` 中已锁定精确版本，Docker 重建可复现；Web 构建会把 LiveKit 客户端拆为独立分包以便浏览器长缓存。
+
 ---
 
 ## 测试
@@ -89,6 +91,7 @@ cd agent && uv run pytest -q
 
 > **说明**：Agent 的测试需要 Python 3.12。若本机 Python 版本过低，推荐用 [uv](https://github.com/astral-sh/uv) 管理虚拟环境：
 > 首次运行 `uv venv --python 3.12`（生成 `agent/.venv`），之后所有 `uv run` 命令会自动使用该环境。
+> 若 `uv run pytest` 报 `Failed to spawn: pytest`，说明虚拟环境尚未安装依赖，先执行 `uv sync` 或回退到 `.venv/bin/python -m pytest -q`。
 > Agent Worker 本身通过 Docker 运行，不依赖本机 Python 版本。
 
 ---

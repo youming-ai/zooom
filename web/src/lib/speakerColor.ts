@@ -1,5 +1,5 @@
 // A small, deterministic palette for speaker tags.
-// The color stays stable for the lifetime of a given sid (speaker id), so
+// The color stays stable for the lifetime of a given speaker id, so
 // captions from the same person share a color across the page.
 
 const PALETTE = [
@@ -14,10 +14,10 @@ const PALETTE = [
 
 /**
  * Pick a stable foreground color for the given speaker id.
- * `sid` is the stable LiveKit participant identity for the speaker.
+ * The value is the stable LiveKit participant identity for the speaker.
  */
-export function speakerColor(sid: string | number | undefined): string {
-  const s = sid == null ? "" : String(sid);
+export function speakerColor(speakerId: string | number | undefined): string {
+  const s = speakerId == null ? "" : String(speakerId);
   if (!s) return PALETTE[0];
   let hash = 0;
   for (let i = 0; i < s.length; i++) {
